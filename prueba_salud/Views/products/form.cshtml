@@ -1,0 +1,61 @@
+﻿@using prueba_salud.Models;
+@{
+    ViewBag.Title = "Create";
+}
+
+@model productsVm 
+
+
+@*<form>
+    <label>Product:</label><br />
+    <input type="text" name="product" class="form-control" required /><br /><br />
+    <label>Description:</label><br />
+    <input type="text" name="description" class="form-control" required /><br /><br />
+    <label>Price: </label><br />
+    <input type="text" name="price" class="form-control" required /><br /><br />
+    <label>Category_id:</label><br />
+    <input type="text" name="category_id" class="form-control" required /><br /><br />
+    <button type="submit" class="btn btn-success">Send</button>
+</form>*@
+
+
+@using (Html.BeginForm("form", "products", FormMethod.Post)) {
+
+    <div class="row mt-15">
+        <div class="col-md-12">
+            @if (ViewBag.id != null)
+            {
+                @Html.HiddenFor(d => d.id)
+            }
+                        
+            <div class="mb-5">
+                @Html.LabelFor(d => d.product1)
+                @Html.TextBoxFor(d => d.product1, "", new { @class = "form-control", @id = "product" })
+                @Html.ValidationMessageFor(d => d.product1, null, new { @class = "text-danger" })
+            </div>
+            <div class="mb-5">
+                @Html.LabelFor(d => d.description)
+                @Html.TextBoxFor(d => d.description, "", new { @class = "form-control", @id = "description" })
+                @Html.ValidationMessageFor(d => d.description, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-5">
+                @Html.LabelFor(d => d.price)
+                @Html.TextBoxFor(d => d.price, "", new { @class = "form-control", @id = "price"})
+                @Html.ValidationMessageFor(d => d.price, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-5">
+                @Html.LabelFor(d => d.category_id)
+                @Html.DropDownList("category_id", (List<SelectListItem>)ViewBag.categories, "Seleccione una opcion", new { @class = "form-control", @id = "category_id" })
+                @Html.ValidationMessageFor(d => d.category_id, null, new { @class = "text-danger" })
+            </div>
+
+            <div style="text-align:left;" class="mt-15">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+}
+
+

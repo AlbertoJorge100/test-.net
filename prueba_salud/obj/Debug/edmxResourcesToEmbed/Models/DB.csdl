@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="store_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categorie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="products" Relationship="Self.FK__products__catego__398D8EEE" FromRole="categories" ToRole="products" />
+    <Property Name="active" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="employee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="phone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="age" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="invoices" Relationship="Self.FK__invoices__employ__3E52440B" FromRole="employees" ToRole="invoices" />
+    <Property Name="active" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="invoice">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="C_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="total" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+    <Property Name="cant_prods" Type="Int32" Nullable="false" />
+    <Property Name="employee_id" Type="Int64" Nullable="false" />
+    <Property Name="customer" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="employee" Relationship="Self.FK__invoices__employ__3E52440B" FromRole="invoices" ToRole="employees" />
+    <NavigationProperty Name="products_invoices" Relationship="Self.FK__products___invoi__4BAC3F29" FromRole="invoices" ToRole="products_invoices" />
+  </EntityType>
+  <EntityType Name="product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="product1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="price" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
+    <Property Name="category_id" Type="Int64" Nullable="false" />
+    <Property Name="date_in" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="category" Relationship="Self.FK__products__catego__398D8EEE" FromRole="products" ToRole="categories" />
+    <NavigationProperty Name="products_invoices" Relationship="Self.FK__products___produ__4CA06362" FromRole="products" ToRole="products_invoices" />
+    <Property Name="active" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="products_invoices">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="product_id" Type="Int64" Nullable="false" />
+    <Property Name="invoice_id" Type="Int64" Nullable="false" />
+    <Property Name="cant_prods" Type="Int32" Nullable="false" />
+    <Property Name="sub_total" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+    <NavigationProperty Name="invoice" Relationship="Self.FK__products___invoi__4BAC3F29" FromRole="products_invoices" ToRole="invoices" />
+    <NavigationProperty Name="product" Relationship="Self.FK__products___produ__4CA06362" FromRole="products_invoices" ToRole="products" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK__products__catego__398D8EEE">
+    <End Role="categories" Type="Self.category" Multiplicity="1" />
+    <End Role="products" Type="Self.product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categories">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="products">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__invoices__employ__3E52440B">
+    <End Role="employees" Type="Self.employee" Multiplicity="1" />
+    <End Role="invoices" Type="Self.invoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="employees">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__products___invoi__4BAC3F29">
+    <End Role="invoices" Type="Self.invoice" Multiplicity="1" />
+    <End Role="products_invoices" Type="Self.products_invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="products_invoices">
+        <PropertyRef Name="invoice_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__products___produ__4CA06362">
+    <End Role="products" Type="Self.product" Multiplicity="1" />
+    <End Role="products_invoices" Type="Self.products_invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="products">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="products_invoices">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="store_dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="categories" EntityType="Self.category" />
+    <EntitySet Name="employees" EntityType="Self.employee" />
+    <EntitySet Name="invoices" EntityType="Self.invoice" />
+    <EntitySet Name="products" EntityType="Self.product" />
+    <EntitySet Name="products_invoices" EntityType="Self.products_invoices" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK__products__catego__398D8EEE" Association="Self.FK__products__catego__398D8EEE">
+      <End Role="categories" EntitySet="categories" />
+      <End Role="products" EntitySet="products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__invoices__employ__3E52440B" Association="Self.FK__invoices__employ__3E52440B">
+      <End Role="employees" EntitySet="employees" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__products___invoi__4BAC3F29" Association="Self.FK__products___invoi__4BAC3F29">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="products_invoices" EntitySet="products_invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__products___produ__4CA06362" Association="Self.FK__products___produ__4CA06362">
+      <End Role="products" EntitySet="products" />
+      <End Role="products_invoices" EntitySet="products_invoices" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
